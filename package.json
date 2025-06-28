@@ -1,0 +1,30 @@
+{
+  "name": "product-store",
+  "version": "1.0.0",
+  "main": "backend/server.js",
+  "scripts": {
+    "dev": "nodemon backend/server.js",
+    "build":"npm install && npm install --prefix frontend2 && npm run build --prefix frontend2",
+    "start":"node backend/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "type": "module",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@arcjet/inspect": "^1.0.0-beta.8",
+    "@arcjet/next": "^1.0.0-beta.8",
+    "@arcjet/node": "^1.0.0-beta.8",
+    "@neondatabase/serverless": "^1.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.0",
+    "pg": "^8.16.2"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  }
+}
