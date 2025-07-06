@@ -3,6 +3,8 @@ import { useProductStore } from '../Store/useProductStore.js';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeftIcon } from 'lucide-react';
 import { Trash2Icon, SaveIcon } from 'lucide-react';
+import { useUserStore } from '../Store/useUserStore.js';
+import toast from 'react-hot-toast';
 
 function ProductPage() {
   const {
@@ -23,6 +25,11 @@ function ProductPage() {
   },[fetchProduct, id]);
 
   const handleDelete = async(id)=>{
+    const {signedIn} = useUserStore.getState();
+    if(!signedIn){
+      toast.error("Please Sign In And Continue");
+      return;
+    }
     if(window.confirm("Are you sure you want to delete this product?")){
       await deleteProduct(id);
       navigate('/');
@@ -117,7 +124,7 @@ function ProductPage() {
                 />
               </div>
               {/*Form Action*/}
-              <div className="flex justify-between mt-8">
+              <div className="flex justify-between mt-8 gap-4">
                 <button type="button" onClick={handleDelete} className="btn btn-error">
                   <Trash2Icon className="size-4 mr-2" />
                   Delete Product

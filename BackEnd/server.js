@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import dotenv from 'dotenv';
 import productRouter from './routes/productRoutes.js';
 import pg from 'pg';
+import userRouter from './routes/userRoutes.js';
 
 dotenv.config();
 
@@ -39,11 +40,41 @@ async function initDb(){
     }
 }
 
-initDb().then(()=>{
-    app.listen(3000, ()=>{
-        console.log('Server is running on port 3000');
-    })
+const db2 = new pg.Client({
+  user:process.env.user,
+  host:process.env.host,
+  password:process.env.password,
+  database:process.env.database2,
+  port:process.env.db_port
 })
+
+db2.connect();
+
+async function initDb2(){
+    try{
+        await db2.query(
+            `CREATE TABLE IF NOT EXISTS users (
+                username VARCHAR(255) PRIMARY KEY,
+                fname VARCHAR(255) NOT NULL,
+                lname VARCHAR(255) NOT NULL,
+                password VARCHAR(255) NOT NULL
+            )`
+        )
+        console.log("Database initialized successfully");
+    } catch(error){
+        console.log("Error initializing Database : ", error);
+    }
+}
+
+Promise.all([initDb(), initDb2()])
+  .then(() => {
+    app.listen(3000, () => {
+      console.log('Server is running on port 3000');
+    });
+  })
+  .catch(err => {
+    console.log("Error initializing databases:", err);
+  });
 
 app.use(express.json());
 app.use(cors());
@@ -51,6 +82,8 @@ app.use(helmet());
 app.use(morgan('dev'));
 
 app.use('/api/products', productRouter);
+
+app.use('/api/users',userRouter);
 
 app.get('/',(req,res)=>{
     res.send('Hello World');

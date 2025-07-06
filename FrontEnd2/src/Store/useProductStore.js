@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useUserStore } from "./useUserStore";
 
 const API_URL = "http://localhost:3000";
 
@@ -22,6 +23,13 @@ export const useProductStore = create((set, get) => ({
 
   addProduct: async (e) => {
     e.preventDefault();
+    const { signedIn } = useUserStore.getState();
+    if (!signedIn) {
+      get().resetFormData();
+      toast.error("Please Sign In And Continue");
+      document.getElementById("add_product_modal").close();
+      return;
+    }
     set({ loading: true });
     try {
       const { formData } = get();
@@ -60,6 +68,12 @@ export const useProductStore = create((set, get) => ({
   },
 
   deleteProduct: async (id) => {
+    const { signedIn } = useUserStore.getState();
+    if (!signedIn) {
+      get().resetFormData();
+      toast.error("Please Sign In And Continue");
+      return;
+    }
     set({ loading: true });
     try {
       await axios.delete(`${API_URL}/api/products/${id}`);
@@ -86,19 +100,31 @@ export const useProductStore = create((set, get) => ({
         formData: response.data.data,
       });
     } catch (error) {
-        set({ error: "Something went wrong while fetching the product.", currentProduct: null });
-        console.log("Error fetching product:", error);
-        toast.error("Failed to fetch product.");
+      set({
+        error: "Something went wrong while fetching the product.",
+        currentProduct: null,
+      });
+      console.log("Error fetching product:", error);
+      toast.error("Failed to fetch product.");
     } finally {
       set({ loading: false });
     }
   },
   updateProduct: async (id) => {
+    const { signedIn } = useUserStore.getState();
+    if (!signedIn) {
+      get().resetFormData();
+      toast.error("Please Sign In And Continue");
+      return;
+    }
     set({ loading: true });
     try {
-      const { formData }=get();
-      const response=await axios.put(`${API_URL}/api/products/${id}`, formData);
-      set({currentProduct: response.data.data});
+      const { formData } = get();
+      const response = await axios.put(
+        `${API_URL}/api/products/${id}`,
+        formData
+      );
+      set({ currentProduct: response.data.data });
       await get().fetchProducts(); // Fetch products after updating
       get().resetFormData(); // Reset form data after successful update
       toast.success("Product updated successfully.");

@@ -5,6 +5,7 @@ import { PlusCircleIcon, RefreshCcwIcon } from "lucide-react"; // Import icons
 import ProductCard from "../components/ProductCard";
 import { PackageIcon } from "lucide-react"; // Importing the Package icon for empty state
 import AddProductModal from "../components/AddProductModal"; // Importing the modal component
+import Slider from "../components/Slider";
 
 function HomePage() {
   const { products, loading, error, fetchProducts } = useProductStore();
@@ -16,6 +17,7 @@ function HomePage() {
 
   return (
     <main className="max-w-6xl mx-auto px-4 py-8">
+      <Slider />
       <div className="flex justify-between items-center mb-8">
         <button
           className="btn btn-primary"

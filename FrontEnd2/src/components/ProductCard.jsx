@@ -3,14 +3,18 @@ import { Link } from 'react-router-dom'
 import { EditIcon } from 'lucide-react' // Importing the Edit icon from lucide-react
 import { Trash2Icon } from 'lucide-react' // Importing the Trash icon from lucide-react
 import { useProductStore } from '../Store/useProductStore'
+import { useNavigate } from 'react-router-dom'
 
 function ProductCard({product}) {
+  const Navigate=useNavigate();
     const { deleteProduct } = useProductStore();
   return (
     <div className='card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300'>
       {/* Product Image */}
       <figure className="relative pt-[56.25%]">
-        <img src={product.image} alt={product.name} className="absolute top-0 left-0 w-full h-full object-cover" />
+        <img src={product.image} alt={product.name} className="absolute top-0 left-0 w-full h-full object-cover cursor-pointer" onClick={()=>{
+      Navigate(`../product/${product.id}`)
+    }}/>
       </figure>
 
       <div className='card-body'> 
