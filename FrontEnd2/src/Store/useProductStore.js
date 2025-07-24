@@ -3,7 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useUserStore } from "./useUserStore";
 
-const API_URL = "http://localhost:3000";
+const API_URL = "https://product-store-1-tr94.onrender.com";
 
 export const useProductStore = create((set, get) => ({
   products: [],
