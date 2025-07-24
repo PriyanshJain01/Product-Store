@@ -70,7 +70,9 @@ Promise.all([initDb(), initDb2()])
   });
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin:'https://product-store-livid-zeta.vercel.app/',
+}));
 app.use(helmet());
 app.use(morgan('dev'));
 

@@ -58,7 +58,7 @@ export const useProductStore = create((set, get) => ({
       return;
     }
     toast.success("Added to the cart successfully!");
-    cartNum=cartNum+1;
+    set({ cartNum: get().cartNum + 1 });
   },
 
   buyProduct: async (e)=>{
