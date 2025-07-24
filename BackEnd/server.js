@@ -18,7 +18,10 @@ const db = new pg.Client({
   host:process.env.host,
   password:process.env.password,
   database:process.env.database,
-  port:process.env.db_port
+  port:process.env.db_port,
+  ssl: {
+    rejectUnauthorized: false
+  }
 })
 
 db.connect();
@@ -40,19 +43,9 @@ async function initDb(){
     }
 }
 
-const db2 = new pg.Client({
-  user:process.env.user,
-  host:process.env.host,
-  password:process.env.password,
-  database:process.env.database2,
-  port:process.env.db_port
-})
-
-db2.connect();
-
 async function initDb2(){
     try{
-        await db2.query(
+        await db.query(
             `CREATE TABLE IF NOT EXISTS users (
                 username VARCHAR(255) PRIMARY KEY,
                 fname VARCHAR(255) NOT NULL,

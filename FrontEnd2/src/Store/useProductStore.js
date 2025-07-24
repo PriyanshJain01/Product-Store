@@ -10,6 +10,7 @@ export const useProductStore = create((set, get) => ({
   loading: false,
   error: null,
   currentProduct: null,
+  cartNum:0,
 
   //form state
   formData: {
@@ -48,7 +49,29 @@ export const useProductStore = create((set, get) => ({
       set({ loading: false });
     }
   },
+  addCurrentProduct: async (e) => {
+    e.preventDefault();
+        const { signedIn } = useUserStore.getState();
+    if (!signedIn) {
+      get().resetFormData();
+      toast.error("Please Sign In And Continue");
+      return;
+    }
+    toast.success("Added to the cart successfully!");
+    cartNum=cartNum+1;
+  },
 
+  buyProduct: async (e)=>{
+    e.preventDefault();
+    const { signedIn } = useUserStore.getState();
+    if (!signedIn) {
+      get().resetFormData();
+      toast.error("Please Sign In And Continue");
+      return;
+    }
+    toast.success("Bought the product successfully!");
+  },
+  
   fetchProducts: async () => {
     set({ loading: true });
     try {

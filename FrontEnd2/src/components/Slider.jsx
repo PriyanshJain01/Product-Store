@@ -4,10 +4,12 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useProductStore } from "../Store/useProductStore";
 import { useNavigate } from "react-router-dom";
+import { useUserStore } from "../Store/useUserStore";
 
 export default function SimpleSlider() {
   const { fetchProducts, products } = useProductStore();
   const Navigate=useNavigate();
+  const {Admin}=useUserStore();
   useEffect(() => {
     const f = async () => {
       await fetchProducts();
@@ -38,9 +40,12 @@ export default function SimpleSlider() {
               src={product.image}
               alt={`Slide ${i + 1}`}
               className="w-full h-full object-cover cursor-pointer"
-              onClick={()=>{
-                Navigate(`../product/${product.id}`)
-              }}
+              onClick={() => {
+                  const isAdmin = useUserStore.getState().Admin; // get fresh state
+                  if (isAdmin) {
+                    Navigate(`../product/${product.id}`);
+                  }
+                }}
             />
           </div>
         ))}

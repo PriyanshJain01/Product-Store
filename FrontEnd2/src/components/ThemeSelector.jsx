@@ -5,7 +5,6 @@ import { useThemeStore } from '../Store/useThemeStore.js'; // Import the theme s
 function ThemeSelector() {
 
     const { theme, setTheme } = useThemeStore(); // Access the theme and setTheme from the store
-    console.log("Current theme:", theme); // Log the current theme for debugging
   return (
     <div className='dropdown dropdown-end'>
       <button tabIndex={0} className='btn btn-ghost btn-circle'>

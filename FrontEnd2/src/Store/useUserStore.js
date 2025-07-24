@@ -10,6 +10,7 @@ export const useUserStore = create((set, get) => ({
   loading: false,
   error: null,
   signedIn:false,
+  Admin:false,
 
   formData: {
     username: "",
@@ -22,12 +23,31 @@ export const useUserStore = create((set, get) => ({
   resetFormData: () =>
     set({ formData: { username: "", fname: "", lname: "", password: "" } }),
 
+  checkAdministrator: async() => {
+    set({loading:true});
+    const{ formData }=get();
+    try{
+      if(formData.username=="Administrator" && formData.password=="Admin_Pass"){
+        set({currentUser:"Admin"});
+        set({Admin:true});
+        set({signedIn:true});
+      }
+    } catch(error){
+      toast.error("Failed to get the Admin");
+    } finally{
+      set({loading:false});
+    }
+  },
+
+  signOut: () => set({ currentUser: null, signedIn: false , Admin:false}),
+
   addUser: async () => {
     set({ loading: true });
     try {
       const { formData } = get();
       await axios.post(`${API_URL}/api/users`, formData);
       set({signedIn:true});
+      set({currentUser:formData.fname});
       console.log("User Added Successfully!");
       toast.success(`Welcome ${formData.fname}!`);
       get().resetFormData();
@@ -55,6 +75,7 @@ export const useUserStore = create((set, get) => ({
       console.log(formData.password);
       if(formData.password===pass){
         set({signedIn:true});
+        set({currentUser:fn});
         console.log("User Added Successfully");
         get().resetFormData();
         toast.success(`Welcome ${fn}!`);
@@ -73,4 +94,6 @@ export const useUserStore = create((set, get) => ({
       set({loading:false});
     }
   },
+
+  
 }));

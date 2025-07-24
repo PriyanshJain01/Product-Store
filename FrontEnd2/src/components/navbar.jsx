@@ -4,11 +4,15 @@ import { useResolvedPath } from "react-router-dom";
 import { ShoppingBagIcon } from "lucide-react";
 import ThemeSelector from "./ThemeSelector.jsx";
 import { useThemeStore } from "../Store/useThemeStore.js"; // Import the theme store
+import { useProductStore } from "../Store/useProductStore.js";
+import { useUserStore } from "../Store/useUserStore.js";
 
 function Navbar() {
   const { theme, setTheme } = useThemeStore(); // Access the theme and setTheme from the store
   const { pathname } = useResolvedPath();
   const isHomePage = pathname === "/";
+  const {products,cartNum}=useProductStore();
+  const {signOut,currentUser,signedIn}=useUserStore();
 
   return (
     <div className="bg-base-100/80 backdrop-blur-lg border-b border-base-content/10 sticky top-0 z-50">
@@ -37,13 +41,28 @@ function Navbar() {
                 <div className="p-2 rounded-full hover:bg-base-200 transition-colors">
                   <ShoppingBagIcon className="size-5" />
                   <span className="badge badge-sm badge-primary indicator-item">
-                    8
+                    {cartNum}
                   </span>
                 </div>
               </div>
             )}
-
+            {signedIn && (
             <div className="dropdown dropdown-hover">
+              <div tabIndex={0} role="button" className="btn m-1">
+                {currentUser}
+              </div>
+              <ul
+                tabIndex={0}
+                className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+              >
+                <li>
+                  <button onClick={signOut}>Sign Out</button>
+                </li>
+              </ul>
+            </div>
+            )}
+            {!signedIn && (
+              <div className="dropdown dropdown-hover">
               <div tabIndex={0} role="button" className="btn m-1">
                 Get Started
               </div>
@@ -59,6 +78,7 @@ function Navbar() {
                 </li>
               </ul>
             </div>
+            )}
           </div>
         </div>
       </div>

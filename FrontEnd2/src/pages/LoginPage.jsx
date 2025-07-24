@@ -5,12 +5,9 @@ import { useProductStore } from "../Store/useProductStore.js";
 import { useParams, useNavigate } from "react-router-dom";
 
 function LoginPage() {
-  const { setFormData, currentUser, addUser, checkUser, formData , error, resetFormData, signedIn, loading} =
+  const { checkAdministrator, setFormData, currentUser, addUser, checkUser, formData , error, resetFormData, signedIn, loading} =
     useUserStore();
   const navigate = useNavigate();
-
-  console.log("Current Product", currentUser);
-
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -82,7 +79,16 @@ function LoginPage() {
               className="btn btn-primary w-full"
               disabled={loading || !formData.username || !formData.password}
               onClick={async ()=>{
-                await checkUser(formData.username);
+                await checkAdministrator();
+                const Admin=useUserStore.getState().Admin;
+                if(Admin){
+                  console.log(
+                    "Welcome Developer"
+                  )
+                }
+                if(!Admin){
+                  await checkUser(formData.username);
+                }
                 if (useUserStore.getState().signedIn) {
                     navigate("/");
                 }
