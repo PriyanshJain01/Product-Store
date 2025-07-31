@@ -13,7 +13,7 @@ import SignUpPage from './pages/SignUpPage.jsx'
 function App() {
   const { theme, setTheme } = useThemeStore() // Access the theme and setTheme from the store
   return (
-    <div className="min-h-screen bg-base-200 transition-colors duration-300" data-theme={theme}>
+    <div className="min-h-screen bg-base-200 transition-colors duration-300 overflow-x-hidden" data-theme={theme}>
 
       <Navbar />
       
