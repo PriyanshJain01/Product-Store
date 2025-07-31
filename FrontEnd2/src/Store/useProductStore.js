@@ -23,7 +23,7 @@ export const useProductStore = create((set, get) => ({
   resetFormData: () => set({ formData: { name: "", image: "", price: "" } }),
 
   addProduct: async (e) => {
-    e.preventDefault();
+    e?.preventDefault?.();
     const { signedIn } = useUserStore.getState();
     if (!signedIn) {
       get().resetFormData();
@@ -50,7 +50,7 @@ export const useProductStore = create((set, get) => ({
     }
   },
   addCurrentProduct: async (e) => {
-    e.preventDefault();
+    e?.preventDefault?.();
         const { signedIn } = useUserStore.getState();
     if (!signedIn) {
       get().resetFormData();
@@ -62,7 +62,7 @@ export const useProductStore = create((set, get) => ({
   },
 
   buyProduct: async (e)=>{
-    e.preventDefault();
+    e?.preventDefault?.();
     const { signedIn } = useUserStore.getState();
     if (!signedIn) {
       get().resetFormData();
